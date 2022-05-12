@@ -8,7 +8,7 @@ public class SocketHandler implements Runnable {
 
     public static ArrayList<SocketHandler> clientsArray = new ArrayList<>(); // trough this array we'll be able to broadcast messages to the all requested destinations
     private Socket socket;
-    private BufferedReader bufferedReader;
+    private BufferedReader bufferedReader;          // BufferedReader obj read data in buffered block so until we won't fill the buffer he will not send the message
     private BufferedWriter bufferedWriter;
     private String userName;
 

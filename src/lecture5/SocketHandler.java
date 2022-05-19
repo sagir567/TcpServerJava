@@ -37,7 +37,10 @@ public class SocketHandler implements Runnable {
             try {
 
                 message = bufferedReader.readLine();
-
+                if(message.equals(userName+": get clients list")){
+                    getList(this);
+                    continue;
+                }
                 broadCastMessage(message);
 
 
@@ -47,6 +50,27 @@ public class SocketHandler implements Runnable {
                 break;
             }
         }
+    }
+
+    public void getList(SocketHandler user){
+        String users ="";
+        for (SocketHandler client: clientsArray){
+            if(!client.userName.equals(userName)){
+                users+=(client.userName+"\n" );
+            }
+            try {
+                user.bufferedWriter.write(users);
+                user.bufferedWriter.newLine();
+                user.bufferedWriter.flush();
+            }catch (IOException e){
+
+
+                System.out.println(e);
+                e.printStackTrace();
+                System.out.println("failed to deliver clients list");
+            }
+            }
+
 
     }
 

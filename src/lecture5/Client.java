@@ -44,8 +44,6 @@ public class Client {
                 bufferedWriter.newLine();
 
                 bufferedWriter.flush();
-
-
             }
         } catch (IOException ex) {
             System.out.println("Oh oh, something went wrong, failed to send message");

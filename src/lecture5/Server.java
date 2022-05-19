@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class Server {
 
-    private ServerSocket serverSocket;
+    private static ServerSocket serverSocket;
 
 
     public Server(ServerSocket serverSocket) {
@@ -37,7 +37,7 @@ public class Server {
 
     }
 
-    public void closeSocket() {
+    public static void closeSocket() {
         try {
             if (serverSocket != null) {
                 serverSocket.close();
@@ -58,9 +58,8 @@ public class Server {
             System.out.println("system failure: failed to initialize the server");
             System.out.println(e.getCause());
             e.printStackTrace();
+            closeSocket();
 
         }
     }
-
-
 }

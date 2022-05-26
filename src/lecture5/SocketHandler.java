@@ -33,16 +33,35 @@ public class SocketHandler implements Runnable {
     @Override
     public void run() {
         String message;
+
         while (socket.isConnected()) {
             try {
 
                 message = bufferedReader.readLine();
-                if(message.equals(userName+": get clients list")){
-                    getList(this);
+                if (message.equals("get clients list")) {
+                    String list = getList();
+                    bufferedWriter.write(list);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                    System.out.println(list + "-----------"+bufferedWriter.toString());
                     continue;
                 }
-                broadCastMessage(message);
+                if(message.contains("<private>")){
 
+                    for (SocketHandler client: clientsArray){
+
+                        if(message.contains("<private><"+client.userName+">")){
+                            message = message.replaceAll("<private><"+client.userName+">","");
+                            client.bufferedWriter.write(message);
+                            client.bufferedWriter.newLine();
+                            client.bufferedWriter.flush();
+                            break;
+                            }
+                        }
+                    }
+                else{
+                    broadCastMessage(message);
+                }
 
             } catch (IOException e) {
                 closeStream(socket, bufferedReader, bufferedWriter);
@@ -52,26 +71,15 @@ public class SocketHandler implements Runnable {
         }
     }
 
-    public void getList(SocketHandler user){
-        String users ="";
-        for (SocketHandler client: clientsArray){
-            if(!client.userName.equals(userName)){
-                users+=(client.userName+"\n" );
+    public String getList() {
+        String users = "ONLINE USERS: ";
+        for (SocketHandler client : clientsArray) {
+            if (!client.userName.equals(userName)) {
+                users += (client.userName + ",");
             }
-            try {
-                user.bufferedWriter.write(users);
-                user.bufferedWriter.newLine();
-                user.bufferedWriter.flush();
-            }catch (IOException e){
+        }
 
-
-                System.out.println(e);
-                e.printStackTrace();
-                System.out.println("failed to deliver clients list");
-            }
-            }
-
-
+        return users;
     }
 
     public void broadCastMessage(String message) {

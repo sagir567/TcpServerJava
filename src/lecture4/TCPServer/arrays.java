@@ -11,11 +11,10 @@ public class arrays {
     private int team ;
     private String NickName;
 
-    arrays(String note , Socket incoming , int team , String NickName )
-    {
+    public arrays(String note, Socket incoming, int team, String NickName) {
         this.note = note;
         this.incoming = incoming;
-        this.team = team ;
+        this.team = team;
         this.NickName = NickName;
 
     }

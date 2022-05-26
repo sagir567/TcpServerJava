@@ -1,13 +1,10 @@
 package lecture3.server;
 
-import org.w3c.dom.ls.LSOutput;
 import lecture3.client.Lecture;
-import java.io.BufferedReader;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.*;
 
 public class socketHandler extends Thread {

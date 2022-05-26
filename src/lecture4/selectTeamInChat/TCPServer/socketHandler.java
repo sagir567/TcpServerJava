@@ -1,4 +1,7 @@
 package lecture4.selectTeamInChat.TCPServer;
+
+import lecture4.TCPServer.arrays;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +11,7 @@ import java.util.ArrayList;
 public class socketHandler extends Thread {
 
     Socket incoming;
-    ArrayList<message>  arr_array;
+    ArrayList<arrays> arr_array;
     private String clientSentence;
     int team;
     String NickNAME;
@@ -16,17 +19,20 @@ public class socketHandler extends Thread {
     int point=0;
     static boolean flag = false;
 
-    socketHandler(Socket _in , ArrayList<message>  arr_array  )
-    {
-        this.incoming=_in;
+    socketHandler(Socket _in, ArrayList<arrays> arr_array, int team) {
+        this.incoming = _in;
         this.arr_array = arr_array;
-
+        this.team = team;
 
 
     }
 
+    public socketHandler(Socket incoming, ArrayList<message> arr_array) {
+    }
+
     public void run()
     {
+
 
         try
         {
@@ -36,8 +42,6 @@ public class socketHandler extends Thread {
                             InputStreamReader(incoming.getInputStream()));
 
             NickNAME = (inFromClient.readLine());
-            team = Integer.parseInt((inFromClient.readLine()));
-            in("1A2B3C" , incoming , arr_array , team , NickNAME);// save the client Sentence
 
 
             while(true) {
@@ -45,8 +49,8 @@ public class socketHandler extends Thread {
 
                 clientSentence = inFromClient.readLine(); // Receive from client
 
-                if(clientSentence.toLowerCase().equals("bye"))// if the client send bye
-                {										// we close the connection
+                if (clientSentence.toLowerCase().equals("bye"))// if the client send bye
+                {                                        // we close the connection
 
                     System.out.println(incoming + " is now disconnect");
 
@@ -55,13 +59,13 @@ public class socketHandler extends Thread {
                     break;
                 }
 
+                if (clientSentence.equals(num + ""))
+                    point += 10;
 
+                in(clientSentence, incoming, arr_array, team, NickNAME, point);// save the client Sentence
 
-                in(clientSentence , incoming , arr_array , team , NickNAME);// save the client Sentence
-
-                if(flag == true)
-                {
-                    point=0;
+                if (flag == true) {
+                    point = 0;
                     sleep(5000);
                     flag = false;
 
@@ -71,9 +75,7 @@ public class socketHandler extends Thread {
 
             }
 
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
 
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
@@ -82,10 +84,19 @@ public class socketHandler extends Thread {
 
     }
 
-    public static synchronized  void in(String clientSentence , Socket incoming , ArrayList<message>  arr_array , int team , String nickName ){
+    public static synchronized void in(String clientSentence, Socket incoming, ArrayList<arrays> arr_array, int team, String nickName, int point) {
 
-        arr_array.add(new message(clientSentence , incoming , team , nickName));
+        if (clientSentence.equals(num + ""))
+            arr_array.add(new arrays(nickName + " Secsses " + point, null, team, nickName)); // all the users can see it because it is static
 
+        else
+            arr_array.add(new arrays(clientSentence, incoming, team, nickName));
+
+        if (point == 50) {
+            arr_array.add(new arrays(nickName + " win the game !!!! ", null, team, nickName)); // all the users can see it because it is static
+            flag = true;
+
+        }
     }
 
 }

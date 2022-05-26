@@ -1,7 +1,5 @@
 package lecture4.selectTeamInChat.TCPServer;
 
-import lecture4.selectTeamInChat.TCPServer.message;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;

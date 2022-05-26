@@ -1,6 +1,5 @@
 package lecture4.TCPServer;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -92,9 +91,11 @@ public class socketHandler extends Thread {
             arr_array.add(new arrays(clientSentence , incoming , team , nickName));
 
         if(point == 50){
-            arr_array.add(new arrays(nickName +" win the game !!!! " , null , team , nickName)); // all the users can see it because it is static
+            arr_array.add(new arrays(nickName + " win the game !!!! ", null, team, nickName)); // all the users can see it because it is static
             flag = true;
 
+
+            System.out.println("dsad");
         }
     }
 
